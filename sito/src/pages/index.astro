@@ -263,6 +263,10 @@ const perlage = Array.from({ length: 52 }, (_, i) => ({
   .categoria .num { position: absolute; top: calc(10vh + 4vw); left: 8vw; font-style: italic; letter-spacing: .3em; opacity: .75; font-size: .95rem; }
   @media (max-width: 760px) { .categoria .num { position: static; margin-bottom: 1.6em; font-size: .82rem; letter-spacing: .18em; } }
   .megatitolo { font-size: clamp(3rem, 12vw, 10rem); line-height: .92; letter-spacing: -.015em; text-transform: uppercase; font-weight: 300; }
+  /* su desktop il titolo deve restare a sinistra della vetrina di bottiglie a destra */
+  @media (min-width: 1021px) {
+    .categoria .megatitolo { max-width: 46vw; font-size: clamp(3rem, 8.5vw, 8rem); }
+  }
   .megatitolo .maschera { display: block; }
   .megatitolo .ghost { color: transparent; -webkit-text-stroke: 1.5px currentColor; opacity: .5; }
   .categoria .appunto-degustazione { font-size: 1.25rem; margin-top: 1.3em; opacity: .95; position: relative; z-index: 3; }
