@@ -1,0 +1,121 @@
+---
+import Base from '../../layouts/Base.astro';
+import { perTipo, contatti } from '../../data/categorie.js';
+import prodotti from '../../data/prodotti.json';
+
+export function getStaticPaths() {
+  return prodotti.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const cat = perTipo[p.tipo];
+const correlati = prodotti
+  .filter((x) => x.slug !== p.slug && (x.azienda === p.azienda || x.tipo === p.tipo))
+  .sort((a, b) => (b.azienda === p.azienda ? 1 : 0) - (a.azienda === p.azienda ? 1 : 0))
+  .slice(0, 3);
+const dettagli = [
+  ['Azienda', p.azienda],
+  ['Denominazione', p.denominazione],
+  ['Uve', p.uve],
+  ['Vinificazione', p.vinificazione],
+  ['Affinamento', p.affinamento],
+].filter(([, v]) => v);
+---
+<Base
+  titolo={`${p.nome} — ${p.azienda} · Claudio Cappelletti`}
+  descrizione={`${p.nome} (${p.denominazione}) di ${p.azienda}: ${p.descrizione.slice(0, 140)}`}
+>
+  <article class="prodotto">
+    <div class="colonne">
+      <div class="visivo">
+        <a class="torna" href={`/${cat.slug}/`}>← {cat.nome}</a>
+        <div class="quadro">
+          <img src={`/immagini/prodotti/${p.immagine}`} alt={p.nome} width="600" height="600" />
+        </div>
+      </div>
+
+      <div class="testo">
+        <p class="tipo" style={`background:${cat.sfondo};color:${cat.testo}`}>{p.tipo}</p>
+        <h1 class="serif">{p.nome}</h1>
+        <p class="azienda">{p.azienda} · <em class="serif">{p.denominazione}</em></p>
+        <p class="descrizione">{p.descrizione}</p>
+
+        <dl class="dettagli">
+          {dettagli.map(([k, v]) => (
+            <div class="riga">
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="cta">
+          <p class="appunto-degustazione">Ti interessa per la tua carta?</p>
+          <div class="azioni">
+            <a class="bottone pieno" href={contatti.telefonoHref}>{contatti.telefono}</a>
+            <a class="bottone scuro" href={contatti.whatsapp}>WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {correlati.length > 0 && (
+      <aside class="correlati">
+        <h2 class="serif">Dalla stessa valigia</h2>
+        <div class="fila">
+          {correlati.map((c) => (
+            <a class="mini" href={`/prodotto/${c.slug}/`}>
+              <div class="quadro-mini">
+                <img src={`/immagini/prodotti/${c.immagine}`} alt={c.nome} loading="lazy" width="300" height="300" />
+              </div>
+              <span class="serif">{c.nome}</span>
+              <small>{c.azienda}</small>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
+  </article>
+</Base>
+
+<style>
+  .prodotto { max-width: 1100px; margin: 0 auto; padding: 16vh 5vw 10vh; }
+  .colonne { display: grid; grid-template-columns: .9fr 1.1fr; gap: 5em; align-items: start; }
+  @media (max-width: 860px) { .colonne { grid-template-columns: 1fr; gap: 3em; } }
+
+  .torna { display: inline-block; text-decoration: none; font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1.4em; color: var(--rame); }
+  .quadro { background: #fbf8ef; padding: 18px; box-shadow: 0 22px 48px rgba(22,17,13,.16); }
+  .quadro img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; mix-blend-mode: multiply; }
+
+  .tipo {
+    display: inline-block; font-size: .7rem; letter-spacing: .26em; text-transform: uppercase;
+    padding: .45em 1.2em; border-radius: 999px; margin-bottom: 1.2em;
+  }
+  h1 { font-weight: 400; font-size: clamp(1.9rem, 4.5vw, 3rem); line-height: 1.1; }
+  .azienda { margin-top: .5em; font-size: .95rem; letter-spacing: .12em; text-transform: uppercase; color: var(--rame); }
+  .azienda em { text-transform: none; letter-spacing: 0; font-size: 1.05rem; font-style: italic; }
+  .descrizione { margin-top: 1.6em; font-family: var(--font-serif); font-size: 1.12rem; line-height: 1.7; }
+
+  .dettagli { margin-top: 2.5em; border-top: 1px solid rgba(22,17,13,.2); }
+  .riga { display: grid; grid-template-columns: 150px 1fr; gap: 1.5em; padding: .85em 0; border-bottom: 1px solid rgba(22,17,13,.12); }
+  @media (max-width: 560px) { .riga { grid-template-columns: 1fr; gap: .2em; } }
+  dt { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; opacity: .55; padding-top: .25em; }
+  dd { font-size: .95rem; }
+
+  .cta { margin-top: 3em; }
+  .cta .appunto-degustazione { font-size: 1.2rem; color: var(--vino); margin-bottom: 1.1em; }
+  .azioni { display: flex; gap: 1em; flex-wrap: wrap; }
+  .bottone.scuro { border-color: var(--vino); color: var(--vino); }
+  .bottone.scuro:hover { background: var(--vino); color: var(--crema); border-color: var(--vino); }
+
+  .correlati { margin-top: 12vh; }
+  .correlati h2 { font-weight: 300; font-style: italic; font-size: 1.7rem; text-align: center; margin-bottom: 2em; }
+  .fila { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4em; max-width: 780px; margin: 0 auto; }
+  @media (max-width: 700px) { .fila { grid-template-columns: 1fr; max-width: 300px; } }
+  .mini { text-decoration: none; color: inherit; text-align: center; }
+  .quadro-mini { background: #fbf8ef; padding: 10px; box-shadow: 0 12px 26px rgba(22,17,13,.12); transition: transform .3s; }
+  .mini:hover .quadro-mini { transform: translateY(-6px) rotate(-1deg); }
+  .quadro-mini img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; mix-blend-mode: multiply; }
+  .mini span { display: block; margin-top: .8em; font-size: 1rem; }
+  .mini small { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--rame); }
+</style>

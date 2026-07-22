@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anteprima mobile — Nuovo sito Claudio Cappelletti</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100svh;background:#16110d;color:#f2ead8;
+  font-family:Archivo,sans-serif;padding:6vh 4vw 8vh;text-align:center;
+}
+h1{font-family:Fraunces,serif;font-weight:300;font-style:italic;font-size:clamp(1.6rem,4vw,2.4rem)}
+h1 small{display:block;font-style:normal;font-size:.45em;letter-spacing:.3em;text-transform:uppercase;opacity:.6;margin-top:1em}
+p.nota{margin:1.5em auto 4em;max-width:46em;font-size:.92rem;opacity:.7;line-height:1.6}
+.fila{display:flex;gap:3.5rem;justify-content:center;flex-wrap:wrap}
+.telefono{width:375px;max-width:92vw}
+.telefono h2{font-family:Fraunces,serif;font-weight:400;font-size:1.25rem;margin-bottom:.2em}
+.telefono .n{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:#c5a45c}
+.cornice{
+  margin-top:1.2em;border:10px solid #000;border-radius:44px;overflow:hidden;
+  box-shadow:0 30px 70px rgba(0,0,0,.6), 0 0 0 2px #3a322a;
+  position:relative;background:#000;
+}
+.cornice::before{
+  content:"";position:absolute;top:10px;left:50%;translate:-50% 0;width:110px;height:24px;
+  background:#000;border-radius:999px;z-index:5;
+}
+.cornice iframe{display:block;width:375px;height:760px;border:0;background:#fff;max-width:100%}
+p.suggerimento{margin-top:5em;font-family:Fraunces,serif;font-style:italic;font-size:1.05rem;opacity:.65}
+</style>
+</head>
+<body>
+  <h1>Come si vedono sul telefono<small>anteprima mobile · 375 px</small></h1>
+  <p class="nota">Ogni cornice è un telefono vero e funzionante: puoi scorrere le pagine direttamente qui dentro.
+  Per la prova definitiva apri i file anche dal tuo smartphone.</p>
+  <div class="fila">
+    <div class="telefono">
+      <span class="n">Concept 1</span>
+      <h2>La Carta</h2>
+      <div class="cornice"><iframe src="carta.html" title="La Carta — mobile"></iframe></div>
+    </div>
+    <div class="telefono">
+      <span class="n">Concept 2</span>
+      <h2>Dietro il banco</h2>
+      <div class="cornice"><iframe src="banco.html" title="Dietro il banco — mobile"></iframe></div>
+    </div>
+    <div class="telefono">
+      <span class="n">Concept 3</span>
+      <h2>Verticale</h2>
+      <div class="cornice"><iframe src="verticale.html" title="Verticale — mobile"></iframe></div>
+    </div>
+  </div>
+  <p class="suggerimento">— scorri dentro ogni telefono per sfogliare la pagina —</p>
+</body>
+</html>

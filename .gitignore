@@ -1,0 +1,13 @@
+# dipendenze
+node_modules/
+
+# build output
+sito/dist/
+sito/.astro/
+
+# sistema
+.DS_Store
+*.log
+
+# file temporanei
+scratchpad/

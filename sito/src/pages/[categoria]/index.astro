@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import { categorie, contatti } from '../../data/categorie.js';
+import prodotti from '../../data/prodotti.json';
+
+export function getStaticPaths() {
+  return categorie
+    .filter((c) => c.slug !== 'birre')
+    .map((c) => ({ params: { categoria: c.slug } }));
+}
+
+const { categoria } = Astro.params;
+const cat = categorie.find((c) => c.slug === categoria);
+const lista = prodotti
+  .filter((p) => p.tipo === cat.tipo)
+  .sort((a, b) => a.nome.localeCompare(b.nome, 'it'));
+const aziende = [...new Set(lista.map((p) => p.azienda).filter(Boolean))].sort((a, b) =>
+  a.localeCompare(b, 'it')
+);
+---
+<Base
+  titolo={`${cat.nome} — Claudio Cappelletti`}
+  descrizione={`${cat.descrizione} ${lista.length} etichette selezionate per ristoranti, bar e birrerie del Garda Trentino.`}
+>
+  <section class="testa" style={`background:${cat.sfondo};color:${cat.testo}`}>
+    <p class="num serif">Capitolo {cat.capitolo} · {lista.length} etichette</p>
+    <h1 class="megatitolo serif"><span class="ghost">{cat.articolo}</span><span>{cat.parola}</span></h1>
+    <p class="appunto-degustazione">{cat.nota}</p>
+    <p class="sotto">{cat.descrizione}</p>
+  </section>
+
+  <section class="catalogo">
+    <div class="filtri" id="filtri">
+      <span class="etichetta-filtri">Cantina:</span>
+      <button class="filtro on" data-azienda="">Tutte</button>
+      {aziende.map((a) => <button class="filtro" data-azienda={a}>{a}</button>)}
+    </div>
+
+    <div class="griglia" id="griglia">
+      {lista.map((p) => (
+        <a class="scheda" href={`/prodotto/${p.slug}/`} data-azienda={p.azienda}>
+          <div class="quadro">
+            <img src={`/immagini/prodotti/${p.immagine}`} alt={p.nome} loading="lazy" width="400" height="400" />
+          </div>
+          <h2 class="serif">{p.nome}</h2>
+          <p class="chi">{p.azienda}</p>
+          <p class="den serif">{p.denominazione}</p>
+        </a>
+      ))}
+    </div>
+
+    <p class="coda">
+      Non trovi quello che cerchi? La selezione cambia con le stagioni:
+      <a href={contatti.telefonoHref}>chiamami</a> o
+      <a href={contatti.whatsapp}>scrivimi su WhatsApp</a>.
+    </p>
+  </section>
+
+  <script>
+    const bottoni = document.querySelectorAll('.filtro');
+    const schede = document.querySelectorAll('.scheda');
+    bottoni.forEach((b) =>
+      b.addEventListener('click', () => {
+        bottoni.forEach((x) => x.classList.remove('on'));
+        b.classList.add('on');
+        const az = b.dataset.azienda;
+        schede.forEach((s) => {
+          s.style.display = !az || s.dataset.azienda === az ? '' : 'none';
+        });
+      })
+    );
+  </script>
+</Base>
+
+<style>
+  .testa { padding: 22vh 8vw 10vh; position: relative; }
+  .num { font-style: italic; letter-spacing: .28em; opacity: .75; font-size: .9rem; margin-bottom: 1.6em; }
+  .megatitolo { font-size: clamp(2.8rem, 10vw, 8rem); line-height: .92; text-transform: uppercase; font-weight: 300; }
+  .megatitolo .ghost { display: block; color: transparent; -webkit-text-stroke: 1.5px currentColor; opacity: .5; }
+  .megatitolo span { display: block; }
+  .appunto-degustazione { font-size: 1.25rem; margin-top: 1.2em; opacity: .95; }
+  .sotto { margin-top: 1.2em; max-width: 34em; opacity: .92; }
+
+  .catalogo { max-width: 1160px; margin: 0 auto; padding: 7vh 5vw 12vh; }
+  .filtri { display: flex; flex-wrap: wrap; gap: .6em; align-items: center; margin-bottom: 4.5em; }
+  .etichetta-filtri { font-size: .74rem; letter-spacing: .24em; text-transform: uppercase; opacity: .6; margin-right: .6em; }
+  .filtro {
+    font-family: var(--font-sans); font-size: .82rem; cursor: pointer;
+    background: none; border: 1px solid rgba(67,18,35,.35); color: inherit;
+    padding: .5em 1.2em; border-radius: 999px; transition: background .25s, color .25s, border-color .25s;
+  }
+  .filtro:hover { border-color: var(--vino); }
+  .filtro.on { background: var(--vino); color: var(--crema); border-color: var(--vino); }
+
+  .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 3em 2.2em; }
+  .scheda { text-decoration: none; color: inherit; text-align: center; }
+  .quadro {
+    background: #fbf8ef; padding: 12px; box-shadow: 0 14px 30px rgba(22,17,13,.14);
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
+  }
+  .scheda:hover .quadro { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 24px 44px rgba(22,17,13,.2); }
+  .quadro img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; mix-blend-mode: multiply; }
+  .scheda h2 { font-weight: 400; font-size: 1.18rem; margin-top: 1.1em; line-height: 1.25; }
+  .scheda .chi { font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rame); margin-top: .35em; }
+  .scheda .den { font-style: italic; opacity: .65; font-size: .92rem; margin-top: .15em; }
+
+  .coda { margin-top: 10vh; text-align: center; font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; opacity: .85; }
+  .coda a { color: var(--vino); text-decoration-color: var(--rame); }
+</style>

@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { perSlug, contatti } from '../../data/categorie.js';
+const cat = perSlug['birre'];
+---
+<Base
+  titolo="Le Birre — Claudio Cappelletti"
+  descrizione="Birre alla spina e in bottiglia per bar e birrerie del Garda Trentino: la proposta giusta si costruisce insieme, a voce."
+  temaScuro={true}
+>
+  <section class="testa" style={`background:${cat.sfondo};color:${cat.testo}`}>
+    <p class="num serif">Capitolo {cat.capitolo} · su richiesta</p>
+    <h1 class="megatitolo serif"><span class="ghost">Le</span><span>Birre</span></h1>
+    <p class="appunto-degustazione">{cat.nota}</p>
+    <p class="sotto">
+      Dal carattere unico, protagoniste di ogni occasione. Spine, formati e marchi
+      cambiano con le stagioni: per questo <strong>la proposta birre non sta su una pagina web</strong> —
+      si costruisce insieme, sul tuo bancone.
+    </p>
+    <p class="meta">{cat.meta}</p>
+  </section>
+
+  <section class="parliamone">
+    <div class="blocco reveal">
+      <h2 class="serif">Come funziona</h2>
+      <ol>
+        <li><strong>Si parte dal locale</strong> — spine disponibili, pubblico, cosa gira adesso.</li>
+        <li><strong>Arriva una proposta su misura</strong> — marchi, formati e rotazioni stagionali.</li>
+        <li><strong>Si assaggia e si decide</strong> — la birra giusta si riconosce al primo sorso.</li>
+      </ol>
+      <div class="azioni">
+        <a class="bottone chiaro" href={contatti.telefonoHref}>{contatti.telefono}</a>
+        <a class="bottone" href={contatti.whatsapp}>WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .testa { padding: 22vh 8vw 12vh; min-height: 72svh; display: grid; align-content: center; }
+  .num { font-style: italic; letter-spacing: .28em; opacity: .75; font-size: .9rem; margin-bottom: 1.6em; }
+  .megatitolo { font-size: clamp(2.8rem, 10vw, 8rem); line-height: .92; text-transform: uppercase; font-weight: 300; }
+  .megatitolo .ghost { display: block; color: transparent; -webkit-text-stroke: 1.5px currentColor; opacity: .5; }
+  .megatitolo span { display: block; }
+  .appunto-degustazione { font-size: 1.25rem; margin-top: 1.2em; opacity: .95; }
+  .sotto { margin-top: 1.2em; max-width: 34em; opacity: .95; }
+  .meta { margin-top: 1.6em; font-size: .74rem; letter-spacing: .28em; text-transform: uppercase; opacity: .75; }
+
+  .parliamone { background: var(--vino-scuro); color: var(--crema); padding: 12vh 8vw 14vh; }
+  .blocco { max-width: 620px; margin: 0 auto; }
+  .blocco h2 { font-weight: 300; font-style: italic; font-size: 2rem; margin-bottom: 1.2em; }
+  ol { list-style: none; counter-reset: passo; }
+  ol li { counter-increment: passo; padding: 1.1em 0 1.1em 3.2em; position: relative; border-bottom: 1px solid rgba(246,240,228,.15); opacity: .9; }
+  ol li::before {
+    content: counter(passo) "."; position: absolute; left: 0; top: .8em;
+    font-family: var(--font-serif); font-style: italic; font-size: 1.6rem; color: var(--rosa);
+  }
+  .azioni { margin-top: 3em; display: flex; gap: 1em; flex-wrap: wrap; }
+</style>

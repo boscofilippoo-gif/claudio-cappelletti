@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept 2 — Dietro il banco · Claudio Cappelletti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#f3ecdd;
+  --espresso:#2b1f16;
+  --ambra:#a86a24;
+  --lavagna:#22271f;
+  --gesso:#e8e3d2;
+  --scotch:rgba(213,181,110,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--crema);color:var(--espresso);
+  font-family:Newsreader,serif;font-size:20px;line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+.hand{font-family:Caveat,cursive}
+.wrap{max-width:960px;margin:0 auto;padding:0 6vw}
+
+/* ============ header minimo ============ */
+.mini{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.7em 5vw;
+  background:color-mix(in srgb, var(--crema) 88%, transparent);
+  backdrop-filter:blur(6px);
+  transform:translateY(-110%);transition:transform .45s cubic-bezier(.22,1,.36,1);
+}
+.mini.on{transform:none}
+.mini .chi{font-style:italic;font-size:.95rem}
+.mini a.chiama{
+  font-family:Caveat,cursive;font-size:1.25rem;color:var(--crema);background:var(--espresso);
+  text-decoration:none;padding:.15em .9em;border-radius:999px;transform:rotate(-1.5deg);
+  transition:transform .2s,background .2s;display:inline-block;
+}
+.mini a.chiama:hover{transform:rotate(1.5deg) scale(1.05);background:var(--ambra)}
+@media(max-width:640px){
+  .mini{justify-content:flex-end;background:transparent;backdrop-filter:none;padding:.6em 4vw}
+  .mini .chi{display:none}
+  .mini a.chiama{white-space:nowrap;font-size:1.1rem}
+}
+
+/* ============ hero ============ */
+.hero{min-height:100svh;display:grid;align-content:center;position:relative;padding:14vh 6vw 10vh}
+.hero h1{
+  font-weight:300;font-size:clamp(2.6rem,7.5vw,5.4rem);line-height:1.06;letter-spacing:-.01em;max-width:11em;
+}
+.hero h1 em{font-style:italic;font-weight:400}
+.hero h1 .r1,.hero h1 .r2,.hero h1 .r3{display:block;opacity:0;transform:translateY(30px);animation:su .9s cubic-bezier(.22,1,.36,1) forwards}
+.hero h1 .r2{animation-delay:.18s}
+.hero h1 .r3{animation-delay:.36s}
+@keyframes su{to{opacity:1;transform:none}}
+.hero .ruolo{
+  margin-top:2em;font-size:1.05rem;max-width:30em;color:#54463a;
+  opacity:0;animation:su 1s .7s forwards;
+}
+.hero .ruolo b{font-weight:500;color:var(--espresso)}
+.freccia-giu{
+  position:absolute;bottom:5vh;left:6vw;font-family:Caveat,cursive;font-size:1.3rem;color:var(--ambra);
+  opacity:0;animation:su 1s 1.2s forwards;
+}
+.freccia-giu svg{display:block;margin:2px 0 0 14px;width:26px;animation:dondola 2.2s ease-in-out infinite}
+@keyframes dondola{50%{transform:translateY(7px)}}
+
+/* polaroid nel hero */
+.pola{
+  position:absolute;background:#fbf8ef;padding:12px 12px 44px;box-shadow:0 14px 34px rgba(43,31,22,.22);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+.pola::before{
+  content:"";position:absolute;top:-14px;left:50%;translate:-50% 0;width:96px;height:28px;
+  background:var(--scotch);transform:rotate(-2deg);
+}
+.pola img{display:block;width:100%;aspect-ratio:4/3.4;object-fit:cover;filter:saturate(.92)}
+.pola figcaption{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:Caveat,cursive;font-size:1.25rem;color:#4d4133}
+.pola:hover{transform:rotate(0deg) scale(1.03)!important;z-index:5}
+.pola.p1{width:min(300px,30vw);right:10vw;top:16vh;transform:rotate(4deg);opacity:0;animation:su 1s .9s forwards}
+.pola.p2{width:min(230px,24vw);right:26vw;top:52vh;transform:rotate(-5deg);opacity:0;animation:su 1s 1.05s forwards}
+@media(max-width:900px){.pola.p2{display:none}.pola.p1{position:relative;right:auto;top:auto;margin:8vh auto 0;width:min(320px,78vw)}}
+
+.annota{position:absolute;font-family:Caveat,cursive;color:var(--ambra);font-size:1.35rem;line-height:1.1;transform:rotate(-3deg)}
+.annota svg{stroke:var(--ambra);fill:none;stroke-width:2;stroke-linecap:round}
+.annota.a1{right:calc(10vw + 150px);top:calc(16vh - 3.2em)}
+@media(max-width:900px){.annota.a1{display:none}}
+
+/* ============ capitoli scroll-telling ============ */
+.capitolo{padding:16vh 0}
+.capitolo .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:6vw;align-items:center}
+.capitolo:nth-of-type(even) .wrap{grid-template-columns:.95fr 1.05fr}
+.capitolo:nth-of-type(even) .testo{order:2}
+@media(max-width:900px){.capitolo .wrap{grid-template-columns:1fr!important}.capitolo .testo{order:0!important}}
+.capitolo h2{
+  font-weight:300;font-style:italic;font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.15;margin-bottom:.6em;
+}
+.capitolo p{color:#54463a;max-width:34em}
+.capitolo p+p{margin-top:1em}
+.capitolo p b{color:var(--espresso);font-weight:500}
+
+.foto-block{position:relative}
+.foto-block .pola{position:relative;display:block;width:min(430px,100%);margin:0 auto}
+.foto-block .nota-foto{
+  position:absolute;bottom:-2.2em;right:0;font-family:Caveat,cursive;font-size:1.3rem;color:var(--ambra);transform:rotate(-2deg);
+}
+
+/* ============ lavagna consigli ============ */
+.lavagna{
+  background:var(--lavagna);color:var(--gesso);
+  padding:14vh 0;position:relative;
+}
+.lavagna::before{
+  content:"";position:absolute;inset:0;opacity:.25;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.lavagna .titolo{text-align:center;margin-bottom:8vh;position:relative}
+.lavagna .titolo .occhiello{font-family:Caveat,cursive;font-size:1.5rem;color:#c8b98a;display:block;transform:rotate(-2deg)}
+.lavagna h2{font-weight:300;font-style:italic;font-size:clamp(2rem,5vw,3.2rem)}
+.consigli{display:grid;grid-template-columns:repeat(3,1fr);gap:3.2em;max-width:1080px;margin:0 auto;padding:0 6vw}
+@media(max-width:900px){.consigli{grid-template-columns:1fr;max-width:460px}}
+.consiglio{position:relative;text-align:center}
+.consiglio .foto{
+  background:#f6f1e4;padding:14px 14px 18px;box-shadow:0 16px 34px rgba(0,0,0,.35);
+  transform:rotate(var(--rot,0deg));transition:transform .35s;
+}
+.consiglio:hover .foto{transform:rotate(0) translateY(-6px)}
+.consiglio .foto img{display:block;width:100%;aspect-ratio:1;object-fit:cover;mix-blend-mode:multiply}
+.consiglio .nome{margin-top:1.3em;font-size:1.15rem;font-weight:500;color:var(--gesso)}
+.consiglio .den{font-style:italic;color:#b3ab90;font-size:.95rem}
+.consiglio .appunto{
+  position:absolute;top:-1.4em;left:50%;translate:-50% 0;white-space:nowrap;
+  font-family:Caveat,cursive;font-size:1.4rem;color:#e9c983;transform:rotate(-3deg);z-index:2;
+}
+.lavagna .chiusa{
+  text-align:center;margin-top:9vh;font-family:Caveat,cursive;font-size:1.5rem;color:#c8b98a;transform:rotate(-1deg);
+}
+
+/* ============ valigia / case ============ */
+.valigia{padding:14vh 0 10vh;overflow:hidden}
+.valigia h2{text-align:center;font-weight:300;font-style:italic;font-size:clamp(1.9rem,4.6vw,2.9rem);margin-bottom:.4em}
+.valigia .sotto{text-align:center;font-family:Caveat,cursive;font-size:1.4rem;color:var(--ambra);margin-bottom:6vh;transform:rotate(-1deg)}
+.nastro{display:flex;gap:0;white-space:nowrap;font-style:italic;font-size:clamp(1.6rem,3.4vw,2.4rem);color:#54463a}
+.nastro .scorre{display:flex;gap:0;animation:scorri 36s linear infinite}
+.nastro span{padding:0 .8em}
+.nastro span::after{content:"·";margin-left:1.6em;color:var(--ambra)}
+@keyframes scorri{to{transform:translateX(-50%)}}
+
+/* ============ congedo ============ */
+.congedo{padding:10vh 6vw 14vh;text-align:center;position:relative}
+.congedo h2{font-weight:300;font-size:clamp(2.2rem,6vw,4rem);font-style:italic;line-height:1.1}
+.congedo p{max-width:30em;margin:1.6em auto 2.6em;color:#54463a}
+.azioni{display:flex;gap:1.2em;justify-content:center;flex-wrap:wrap}
+.azioni a{
+  text-decoration:none;font-size:1.1rem;padding:.75em 1.7em;border-radius:999px;transition:transform .2s,box-shadow .2s;
+}
+.azioni a:hover{transform:translateY(-3px)}
+.azioni .tel{background:var(--espresso);color:var(--crema);box-shadow:0 10px 26px rgba(43,31,22,.3)}
+.azioni .wa{border:1.5px solid var(--espresso);color:var(--espresso)}
+.firma{margin-top:9vh}
+.firma svg{width:min(300px,60vw);height:auto;display:block;margin:0 auto}
+.firma .chi{font-size:.9rem;letter-spacing:.24em;text-transform:uppercase;color:#54463a;margin-top:.6em}
+.recapiti{margin-top:5vh;font-size:.9rem;color:#54463a;line-height:1.9}
+.recapiti a{color:inherit}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal.vis{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav class="mini" id="mini">
+  <span class="chi">Claudio Cappelletti — beverage, dal vivo</span>
+  <a class="chiama" href="tel:+393428077784">chiamami: 342 807 7784</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <h1>
+    <span class="r1">Ciao, sono <em>Claudio</em>.</span>
+    <span class="r2">Porto il vino giusto</span>
+    <span class="r3">nei <em>locali giusti</em>.</span>
+  </h1>
+  <p class="ruolo">
+    Agente di commercio nel beverage: lavoro con <b>ristoranti, bar e birrerie</b> tra Riva del Garda
+    e il Trentino. Niente call center, niente cataloghi anonimi: <b>vengo io, con le bottiglie</b>.
+  </p>
+
+  <figure class="pola p1">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=75" alt="Sala di un ristorante">
+    <figcaption>il mio ufficio, più o meno</figcaption>
+  </figure>
+  <figure class="pola p2">
+    <img src="../migrazione/foto/corks-web.jpg" alt="Tappi di vino">
+    <figcaption>ricordi di lavoro</figcaption>
+  </figure>
+  <div class="annota a1">eccolo qui, il campo<br>di battaglia
+    <svg viewBox="0 0 40 44" width="30"><path d="M6 4 C 14 18, 24 26, 32 38 M32 38 l-10 -4 M32 38 l2 -11"/></svg>
+  </div>
+
+  <div class="freccia-giu">scorri, ti racconto
+    <svg viewBox="0 0 24 34"><path d="M12 2 v26 M12 28 l-7 -8 M12 28 l7 -8" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+</header>
+
+<!-- ============ CAPITOLO 1 ============ -->
+<section class="capitolo">
+  <div class="wrap">
+    <div class="testo reveal">
+      <h2>Il vino lo si vende a voce, non a listino.</h2>
+      <p>Sono anni che faccio questa strada: si entra, si stringe una mano, si stappa.
+      Conosco <b>ogni etichetta che propongo</b> — le ho bevute, le ho vendute, le ho viste
+      tornare sui tavoli dei clienti affezionati.</p>
+      <p>Il mio lavoro è semplice da dire e difficile da fare: <b>la bottiglia giusta per il tuo locale</b>,
+      al prezzo giusto, quando ti serve.</p>
+    </div>
+    <div class="foto-block reveal">
+      <figure class="pola" style="transform:rotate(2.5deg)">
+        <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=900&q=75" alt="Servizio del vino al tavolo">
+        <figcaption>il momento che conta</figcaption>
+      </figure>
+      <span class="nota-foto">← qui si decide tutto</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPITOLO 2 ============ -->
+<section class="capitolo">
+  <div class="wrap">
+    <div class="testo reveal">
+      <h2>Sessanta etichette, quindici cantine, una valigia.</h2>
+      <p>Bollicine da Franciacorta, Trento e Champagne. Bianchi dal Lugana al Greco di Tufo.
+      Rossi dall'Amarone al Primitivo. E le birre, per chi ha le spine che contano.</p>
+      <p>Non è un catalogo infinito: è una <b>selezione che sto dietro personalmente</b>,
+      cantina per cantina.</p>
+    </div>
+    <div class="foto-block reveal">
+      <figure class="pola" style="transform:rotate(-2.5deg)">
+        <img src="../migrazione/foto/foto2-web.jpg" alt="Bollicine De Maldè">
+        <figcaption>le De Maldè, appena arrivate</figcaption>
+      </figure>
+      <span class="nota-foto">franciacorta che si spiega da sola →</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAVAGNA CONSIGLI ============ -->
+<section class="lavagna">
+  <div class="titolo reveal">
+    <span class="occhiello">appunti dal banco</span>
+    <h2>Tre che consiglio a occhi chiusi</h2>
+  </div>
+  <div class="consigli">
+    <div class="consiglio reveal" style="--rot:-2.5deg">
+      <span class="appunto">con il pesce di lago, garanzia</span>
+      <div class="foto"><img src="../migrazione/immagini/lugana.jpg" alt="Lugana"></div>
+      <div class="nome">Lugana — Casello Bondoni</div>
+      <div class="den">DOC · Turbiana</div>
+    </div>
+    <div class="consiglio reveal" style="--rot:2deg">
+      <span class="appunto">l'asso nella manica per l'aperitivo</span>
+      <div class="foto"><img src="../migrazione/immagini/franciacorta-brut.jpg" alt="Franciacorta Brut"></div>
+      <div class="nome">Franciacorta Brut — De Maldè</div>
+      <div class="den">DOCG · Chardonnay</div>
+    </div>
+    <div class="consiglio reveal" style="--rot:-1.5deg">
+      <span class="appunto">quando la serata si fa seria</span>
+      <div class="foto"><img src="../migrazione/immagini/postera-amarone.jpg" alt="Postera Amarone"></div>
+      <div class="nome">Postera Amarone — Manara</div>
+      <div class="den">DOCG · Corvina, Rondinella</div>
+    </div>
+  </div>
+  <p class="chiusa reveal">…e le altre 57 te le racconto al tavolo. Porto io i calici.</p>
+</section>
+
+<!-- ============ LE CASE ============ -->
+<section class="valigia">
+  <h2 class="reveal">Le cantine che porto in valigia</h2>
+  <p class="sotto reveal">piccole, vere, quasi tutte a conduzione familiare</p>
+  <div class="nastro" aria-hidden="true">
+    <div class="scorre">
+      <span>De Maldè</span><span>Manara</span><span>Pravis</span><span>Humar</span><span>Costa Catterina</span><span>Tenuta Ponte</span><span>Bival</span><span>San Martino</span><span>Casello Bondoni</span><span>Vetrere</span><span>Colli Zugna</span><span>Podere Virginiolo</span><span>Pisoni</span><span>Centorame</span>
+      <span>De Maldè</span><span>Manara</span><span>Pravis</span><span>Humar</span><span>Costa Catterina</span><span>Tenuta Ponte</span><span>Bival</span><span>San Martino</span><span>Casello Bondoni</span><span>Vetrere</span><span>Colli Zugna</span><span>Podere Virginiolo</span><span>Pisoni</span><span>Centorame</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONGEDO ============ -->
+<section class="congedo">
+  <h2 class="reveal">Passiamo al tu?</h2>
+  <p class="reveal">Una telefonata, due chiacchiere, e se ha senso passo a trovarti con qualche bottiglia.
+  Lavoro tra <b>Riva del Garda e il Trentino</b>.</p>
+  <div class="azioni reveal">
+    <a class="tel" href="tel:+393428077784">342 807 7784</a>
+    <a class="wa" href="https://wa.me/393428077784">scrivimi su WhatsApp</a>
+  </div>
+
+  <div class="firma reveal">
+    <svg viewBox="0 0 300 90">
+      <path id="sig" d="M28 64 C 34 34, 52 20, 58 30 C 64 40, 46 66, 40 64 C 52 56, 74 40, 88 44 C 96 46, 88 60, 96 58 C 104 56, 112 42, 120 46 C 126 49, 124 58, 132 55 C 142 51, 150 40, 162 44 C 172 47, 168 58, 178 55 C 190 51, 200 38, 214 43 C 226 47, 224 60, 238 54 C 250 48, 262 40, 272 44"
+        fill="none" stroke="#2b1f16" stroke-width="2.6" stroke-linecap="round"/>
+    </svg>
+    <div class="chi">Claudio Cappelletti · Beverage Sales Agent</div>
+  </div>
+
+  <div class="recapiti reveal">
+    Via San Tomaso 31/C — Riva del Garda (TN)<br>
+    <a href="mailto:cappellettibeverage@gmail.com">cappellettibeverage@gmail.com</a>
+  </div>
+</section>
+
+<script>
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// mini header
+const mini=document.getElementById('mini');
+addEventListener('scroll',()=>{mini.classList.toggle('on',scrollY>innerHeight*.6)},{passive:true});
+
+// firma disegnata quando entra in vista
+const sig=document.getElementById('sig');
+const len=sig.getTotalLength();
+sig.style.strokeDasharray=len; sig.style.strokeDashoffset=len;
+new IntersectionObserver((es,o)=>{
+  if(es[0].isIntersecting){
+    sig.style.transition='stroke-dashoffset 2.4s cubic-bezier(.4,0,.3,1)';
+    sig.style.strokeDashoffset=0; o.disconnect();
+  }
+},{threshold:.6}).observe(sig);
+</script>
+</body>
+</html>

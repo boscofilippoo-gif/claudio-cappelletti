@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Nuovo sito Claudio Cappelletti</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100svh;display:grid;place-content:center;gap:3rem;
+  background:#16110d;color:#f2ead8;font-family:Archivo,sans-serif;
+  padding:8vh 6vw;text-align:center;
+}
+h1{font-family:Fraunces,serif;font-weight:300;font-style:italic;font-size:clamp(1.8rem,4.5vw,2.8rem)}
+h1 small{display:block;font-style:normal;font-size:.45em;letter-spacing:.3em;text-transform:uppercase;opacity:.6;margin-top:1em}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1000px}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
+a.card{
+  display:block;text-decoration:none;color:inherit;border:1px solid #4a3f30;padding:2.2rem 1.6rem;
+  transition:transform .3s,border-color .3s,background .3s;
+}
+a.card:hover{transform:translateY(-6px);border-color:#c5a45c;background:#1d1712}
+.card .n{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#c5a45c}
+.card h2{font-family:Fraunces,serif;font-weight:400;font-size:1.7rem;margin:.5em 0 .6em}
+.card p{font-size:.9rem;line-height:1.55;opacity:.75}
+</style>
+</head>
+<body>
+  <h1>Tre concept per il nuovo sito<small>Claudio Cappelletti · Beverage Sales Agent</small></h1>
+  <div class="cards">
+    <a class="card" href="carta.html">
+      <span class="n">Concept 1</span>
+      <h2>La Carta</h2>
+      <p>Il sito come una carta dei vini d'autore: carta avorio, tipografia da stamperia, voci numerate, timbro di selezione.</p>
+    </a>
+    <a class="card" href="banco.html">
+      <span class="n">Concept 2</span>
+      <h2>Dietro il banco</h2>
+      <p>Claudio racconta in prima persona: polaroid, appunti a mano, consigli dal banco e firma in calce.</p>
+    </a>
+    <a class="card" href="verticale.html">
+      <span class="n">Concept 3</span>
+      <h2>Verticale</h2>
+      <p>Una degustazione in capitoli a schermo pieno: un colore per categoria, tipografia enorme, molto scenografico.</p>
+    </a>
+  </div>
+</body>
+</html>

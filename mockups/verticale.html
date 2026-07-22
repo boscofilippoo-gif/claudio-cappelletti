@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept 3 — Verticale · Claudio Cappelletti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nero:#16110d;
+  --avorio:#f2ead8;
+  --oro:#c5a45c;
+  --oro-scuro:#8a6a2a;
+  --paglia:#e3d3a2;
+  --paglia-scura:#6e5c22;
+  --bordeaux:#3f0f1d;
+  --bordeaux-chiaro:#e7c9c2;
+  --ambra:#7a3c12;
+  --ambra-chiara:#f0d3ae;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-snap-type:y proximity}
+body{
+  background:var(--nero);color:var(--avorio);
+  font-family:Archivo,sans-serif;font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.serif{font-family:Fraunces,serif;font-weight:400}
+
+/* ====== nav laterale ====== */
+.dots{
+  position:fixed;right:22px;top:50%;translate:0 -50%;z-index:80;display:grid;gap:14px;
+}
+.dots a{
+  width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;display:block;
+  color:var(--avorio);opacity:.55;transition:opacity .3s,transform .3s,background .3s;position:relative;
+}
+.dots a.on{opacity:1;background:currentColor;transform:scale(1.35)}
+.dots a i{
+  position:absolute;right:22px;top:50%;translate:0 -50%;font-style:normal;font-size:.68rem;
+  letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .25s;
+}
+.dots a:hover i{opacity:.9}
+@media(max-width:760px){.dots{display:none}}
+
+/* ====== telefono fisso ====== */
+.chiama{
+  position:fixed;left:22px;bottom:22px;z-index:80;
+  font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  color:inherit;border:1px solid currentColor;padding:.7em 1.3em;border-radius:999px;
+  backdrop-filter:blur(4px);transition:background .3s,color .3s;
+}
+.chiama:hover{background:var(--avorio);color:var(--nero);border-color:var(--avorio)}
+
+/* ====== capitoli ====== */
+.cap{
+  min-height:100svh;scroll-snap-align:start;position:relative;overflow:hidden;
+  display:grid;align-content:center;padding:15vh 8vw 12vh;
+}
+.cap .num{
+  position:absolute;top:6vh;left:8vw;font-family:Fraunces,serif;font-style:italic;
+  font-size:1rem;letter-spacing:.3em;opacity:.75;
+}
+@media(max-width:760px){
+  .cap .num{position:static;margin-bottom:1.6em;font-size:.82rem;letter-spacing:.18em}
+}
+.cap .megatitolo{
+  font-size:clamp(3.4rem,13vw,11rem);line-height:.92;letter-spacing:-.015em;
+  text-transform:uppercase;font-weight:300;
+}
+.cap .megatitolo .fill{display:block}
+.cap .megatitolo .ghost{
+  display:block;color:transparent;-webkit-text-stroke:1.5px currentColor;opacity:.5;
+}
+.cap .sotto{
+  margin-top:2.2em;max-width:34em;font-size:clamp(1rem,1.6vw,1.15rem);opacity:.92;
+  position:relative;z-index:3;
+}
+.cap .meta{
+  margin-top:1.6em;font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;opacity:.75;
+  position:relative;z-index:3;
+}
+@media(min-width:1021px){
+  .cap .sotto{max-width:min(30em,42vw)}
+  .cap .meta{max-width:42vw}
+}
+.cap .vai{
+  margin-top:3em;justify-self:start;position:relative;z-index:3;
+  font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:inherit;
+  border-bottom:1px solid currentColor;padding-bottom:.35em;transition:letter-spacing .3s;
+}
+.cap .vai:hover{letter-spacing:.34em}
+
+/* bottiglie a destra */
+.bottiglie{
+  position:absolute;right:4vw;top:50%;translate:0 -50%;display:flex;gap:2vw;align-items:flex-end;
+}
+.bottiglia{
+  background:var(--avorio);padding:10px;width:clamp(115px,12.5vw,175px);
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.bottiglia img{display:block;width:100%;aspect-ratio:1/1.15;object-fit:cover;object-position:top}
+.bottiglia figcaption{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#3a3227;padding:8px 2px 2px;text-align:center;
+}
+.bottiglia:nth-child(1){transform:rotate(-3deg) translateY(12px)}
+.bottiglia:nth-child(2){transform:rotate(2deg) translateY(-16px)}
+.bottiglia:nth-child(3){transform:rotate(-1deg) translateY(6px)}
+.bottiglia:hover{transform:rotate(0) translateY(-10px) scale(1.04);z-index:3}
+@media(max-width:1020px){
+  .bottiglie{position:static;translate:none;margin-top:5vh;justify-content:flex-start;flex-wrap:wrap;gap:16px}
+  .bottiglia{width:clamp(110px,26vw,150px)}
+}
+
+/* nastro etichette in fondo al capitolo */
+.nastro{
+  position:absolute;bottom:0;left:0;right:0;padding:.9em 0;border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);
+  overflow:hidden;white-space:nowrap;font-family:Fraunces,serif;font-style:italic;font-size:1.05rem;opacity:.85;
+}
+.nastro div{display:inline-block;animation:slide 30s linear infinite}
+.nastro span{margin:0 1.6em}
+.nastro span::after{content:"—";margin-left:3.2em;opacity:.5}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ====== temi capitolo ====== */
+.cap.intro{background:var(--nero);color:var(--avorio);text-align:left}
+.cap.intro::before{
+  content:"";position:absolute;inset:0;
+  background:url('../migrazione/foto/foto2-web.jpg') center/cover no-repeat;
+  opacity:.38;
+}
+.cap.intro>*{position:relative}
+.cap.intro .megatitolo{font-style:italic;text-transform:none;font-size:clamp(2.6rem,8vw,6.4rem);letter-spacing:0}
+.cap.intro .ruolo{
+  margin-top:2.5em;display:inline-block;justify-self:start;
+  border:1px solid color-mix(in srgb,var(--avorio) 55%,transparent);border-radius:999px;
+  padding:.65em 1.5em;font-size:.82rem;letter-spacing:.26em;text-transform:uppercase;
+}
+.cap.bollicine{background:linear-gradient(160deg,#d9c084,var(--paglia) 55%,#cbb373);color:#3d2f10}
+.cap.bianchi{background:linear-gradient(160deg,#eee4c2,#e9ddb4 55%,#ddcd9c);color:#4a3c14}
+.cap.rossi{background:linear-gradient(160deg,#450f20,var(--bordeaux) 60%,#2c0a15);color:var(--bordeaux-chiaro)}
+.cap.birre{background:linear-gradient(160deg,#8a4517,var(--ambra) 60%,#5e2c0b);color:var(--ambra-chiara)}
+.cap.fine{background:var(--nero);color:var(--avorio);text-align:center}
+.cap.fine .megatitolo{font-size:clamp(2.4rem,8vw,6rem);text-transform:none;font-style:italic;letter-spacing:0}
+
+/* le foto bottiglia vivono su card avorio in ogni capitolo: stesso linguaggio, ombra morbida */
+.cap.bollicine .bottiglia,.cap.bianchi .bottiglia{box-shadow:0 24px 50px rgba(61,47,16,.35)}
+
+/* ====== finale ====== */
+.cap.fine .sotto{margin-left:auto;margin-right:auto}
+.fine-azioni{margin-top:3em;display:flex;gap:1.2em;justify-content:center;flex-wrap:wrap}
+.fine-azioni a{
+  text-decoration:none;color:inherit;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid currentColor;padding:1em 2.2em;border-radius:999px;transition:background .3s,color .3s;
+}
+.fine-azioni a:hover{background:var(--avorio);color:var(--nero)}
+.fine-azioni a.pieno{background:var(--oro);border-color:var(--oro);color:var(--nero)}
+.fine-azioni a.pieno:hover{background:var(--avorio);border-color:var(--avorio)}
+.fine .recapiti{margin-top:6vh;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;opacity:.7;line-height:2.2}
+.fine .recapiti a{color:inherit}
+
+/* ====== reveal ====== */
+[data-r]{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1)}
+.cap.vis [data-r]{opacity:1;transform:none}
+.cap.vis [data-r="2"]{transition-delay:.12s}
+.cap.vis [data-r="3"]{transition-delay:.24s}
+.cap.vis [data-r="4"]{transition-delay:.36s}
+.cap.vis [data-r="5"]{transition-delay:.48s}
+</style>
+</head>
+<body>
+
+<nav class="dots" id="dots">
+  <a href="#intro" class="on"><i>Inizio</i></a>
+  <a href="#bollicine"><i>Le Bollicine</i></a>
+  <a href="#bianchi"><i>I Bianchi</i></a>
+  <a href="#rossi"><i>I Rossi</i></a>
+  <a href="#birre"><i>Le Birre</i></a>
+  <a href="#contatti"><i>Contatti</i></a>
+</nav>
+
+<a class="chiama" href="tel:+393428077784">☎ 342 807 7784</a>
+
+<!-- ========== INTRO ========== -->
+<section class="cap intro vis" id="intro">
+  <p class="num" data-r="1">Claudio Cappelletti — Riva del Garda</p>
+  <h1 class="megatitolo" data-r="2">I miei anni di esperienza,<br>nei vostri bicchieri.</h1>
+  <p class="sotto" data-r="3">
+    Agente di commercio nel beverage per <strong>ristoranti, bar e birrerie</strong>.
+    Sessanta etichette, quindici cantine: una verticale in quattro capitoli.
+  </p>
+  <span class="ruolo" data-r="4">scorri la degustazione ↓</span>
+  <div class="nastro" aria-hidden="true"><div>
+    <span>Franciacorta</span><span>Lugana</span><span>Amarone</span><span>Champagne</span><span>Ribolla Gialla</span><span>Primitivo</span><span>Trento DOC</span><span>Gewürztraminer</span><span>Nebbiolo</span><span>Moscato d'Asti</span>
+    <span>Franciacorta</span><span>Lugana</span><span>Amarone</span><span>Champagne</span><span>Ribolla Gialla</span><span>Primitivo</span><span>Trento DOC</span><span>Gewürztraminer</span><span>Nebbiolo</span><span>Moscato d'Asti</span>
+  </div></div>
+</section>
+
+<!-- ========== 01 BOLLICINE ========== -->
+<section class="cap bollicine" id="bollicine">
+  <p class="num" data-r="1">Capitolo 01 · diciassette etichette</p>
+  <h2 class="megatitolo" data-r="2"><span class="ghost">Le</span><span class="fill">Bollicine</span></h2>
+  <p class="sotto" data-r="3">Dal Franciacorta di De Maldè allo Champagne di Bival, passando per il Trento DOC
+  e i prosecchi di San Martino: la spalla giusta per aperitivi che non finiscono al primo giro.</p>
+  <p class="meta" data-r="4">Franciacorta DOCG · Trento DOC · Champagne AOC · DOC Treviso · Limoux AOC</p>
+  <a class="vai" href="#" data-r="5">Sfoglia le bollicine</a>
+  <div class="bottiglie" data-r="4">
+    <figure class="bottiglia"><img src="../migrazione/immagini/franciacorta-brut.jpg" alt=""><figcaption>Franciacorta Brut</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/champagne-jean-de-villare-brut-grande-reserve.jpg" alt=""><figcaption>Jean de Villare</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/morus.jpg" alt=""><figcaption>Morus · Trento DOC</figcaption></figure>
+  </div>
+</section>
+
+<!-- ========== 02 BIANCHI ========== -->
+<section class="cap bianchi" id="bianchi">
+  <p class="num" data-r="1">Capitolo 02 · ventiquattro etichette</p>
+  <h2 class="megatitolo" data-r="2"><span class="ghost">I</span><span class="fill">Bianchi</span></h2>
+  <p class="sotto" data-r="3">Il Lugana per il pesce di lago, la Ribolla del Collio, i profumi trentini di Pravis,
+  giù fino a Greco di Tufo e Fiano d'Avellino: bianchi che reggono la carta tutto l'anno.</p>
+  <p class="meta" data-r="4">Lugana DOC · Collio · IGT Trentino · DOCG Irpinia</p>
+  <a class="vai" href="#" data-r="5">Sfoglia i bianchi</a>
+  <div class="bottiglie" data-r="4">
+    <figure class="bottiglia"><img src="../migrazione/immagini/lugana.jpg" alt=""><figcaption>Lugana</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/ribolla-gialla.jpg" alt=""><figcaption>Ribolla Gialla</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/gewurztraminer-cros-del-mont.jpg" alt=""><figcaption>Gewürztraminer</figcaption></figure>
+  </div>
+</section>
+
+<!-- ========== 03 ROSSI ========== -->
+<section class="cap rossi" id="rossi">
+  <p class="num" data-r="1">Capitolo 03 · diciannove etichette</p>
+  <h2 class="megatitolo" data-r="2"><span class="ghost">I</span><span class="fill">Rossi</span></h2>
+  <p class="sotto" data-r="3">Gli Amaroni di Manara, il Nebbiolo del Roero, il Super Tuscan di Podere Virginiolo
+  e il Primitivo salentino di Vetrere: rossi che fanno alzare lo scontrino medio, non solo i calici.</p>
+  <p class="meta" data-r="4">Amarone DOCG · Valpolicella Ripasso · Nebbiolo d'Alba · IGT Toscana · IGP Salento</p>
+  <a class="vai" href="#" data-r="5">Sfoglia i rossi</a>
+  <div class="bottiglie" data-r="4">
+    <figure class="bottiglia"><img src="../migrazione/immagini/postera-amarone.jpg" alt=""><figcaption>Postera Amarone</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/nebbiolo-dalba-sup.jpg" alt=""><figcaption>Nebbiolo d'Alba</figcaption></figure>
+    <figure class="bottiglia"><img src="../migrazione/immagini/ser-matteo-super-tuscan.jpg" alt=""><figcaption>Ser Matteo</figcaption></figure>
+  </div>
+</section>
+
+<!-- ========== 04 BIRRE ========== -->
+<section class="cap birre" id="birre">
+  <p class="num" data-r="1">Capitolo 04 · su richiesta</p>
+  <h2 class="megatitolo" data-r="2"><span class="ghost">Le</span><span class="fill">Birre</span></h2>
+  <p class="sotto" data-r="3">Dal carattere unico, protagoniste di ogni occasione: spine, formati e marchi
+  cambiano con le stagioni. La proposta giusta per la tua birreria la costruiamo insieme, a voce.</p>
+  <p class="meta" data-r="4">Alla spina · In bottiglia · Selezioni stagionali</p>
+  <a class="vai" href="#contatti" data-r="5">Parliamone</a>
+</section>
+
+<!-- ========== CONTATTI ========== -->
+<section class="cap fine" id="contatti">
+  <p class="num" data-r="1">Fine della degustazione</p>
+  <h2 class="megatitolo" data-r="2">Il prossimo assaggio<br>è al tuo tavolo.</h2>
+  <p class="sotto" data-r="3">Degustazioni in sede, consigli sulla carta, riordini rapidi.
+  Lavoro tra Riva del Garda e il Trentino.</p>
+  <div class="fine-azioni" data-r="4">
+    <a class="pieno" href="tel:+393428077784">342 807 7784</a>
+    <a href="https://wa.me/393428077784">WhatsApp</a>
+    <a href="mailto:cappellettibeverage@gmail.com">Email</a>
+  </div>
+  <p class="recapiti" data-r="5">
+    Claudio Cappelletti · Beverage Sales Agent<br>
+    Via San Tomaso 31/C — Riva del Garda (TN)
+  </p>
+</section>
+
+<script>
+const caps=[...document.querySelectorAll('.cap')];
+const dots=[...document.querySelectorAll('.dots a')];
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    e.target.classList.add('vis');
+    const i=caps.indexOf(e.target);
+    dots.forEach((d,j)=>d.classList.toggle('on',j===i));
+    // il colore dei dot e del bottone chiama si adatta al capitolo
+    const c=getComputedStyle(e.target).color;
+    document.getElementById('dots').style.color=c;
+    document.querySelector('.chiama').style.color=c;
+  }
+}),{threshold:.55});
+caps.forEach(c=>io.observe(c));
+</script>
+</body>
+</html>

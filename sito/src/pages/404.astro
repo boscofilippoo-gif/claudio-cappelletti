@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  titolo="Pagina non trovata — Claudio Cappelletti"
+  descrizione="La pagina che cerchi non esiste. Torna al catalogo di Claudio Cappelletti."
+  temaScuro={true}
+>
+  <section class="vuota">
+    <p class="appunto-degustazione appunto">questa bottiglia non è in catalogo</p>
+    <h1 class="serif">Pagina non trovata.</h1>
+    <div class="azioni">
+      <a class="bottone chiaro" href="/">Torna all'inizio</a>
+      <a class="bottone" href="/contatti/">Contatti</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .vuota {
+    background: var(--vino-scuro); color: var(--crema);
+    min-height: 100svh; display: grid; align-content: center; justify-items: center;
+    text-align: center; padding: 20vh 6vw; gap: 1.5em;
+  }
+  .appunto { font-size: 1.2rem; color: var(--rosa); }
+  h1 { font-weight: 300; font-style: italic; font-size: clamp(2.2rem, 7vw, 4.5rem); }
+  .azioni { display: flex; gap: 1em; flex-wrap: wrap; justify-content: center; }
+</style>

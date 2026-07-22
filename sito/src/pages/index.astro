@@ -1,0 +1,419 @@
+---
+import Base from '../layouts/Base.astro';
+import { categorie, contatti, cantine } from '../data/categorie.js';
+import prodotti from '../data/prodotti.json';
+
+const perSlugProdotto = Object.fromEntries(prodotti.map((p) => [p.slug, p]));
+const vetrina = {
+  bollicine: ['franciacorta-brut', 'champagne-jean-de-villare-brut-grande-reserve', 'morus'],
+  bianchi: ['lugana', 'ribolla-gialla', 'gewurztraminer-cros-del-mont'],
+  rossi: ['postera-amarone', 'nebbiolo-dalba-sup', 'ser-matteo-super-tuscan'],
+};
+const consigli = [
+  { slug: 'lugana', appunto: 'Con il pesce di lago, una certezza' },
+  { slug: 'franciacorta-brut', appunto: "L'aperitivo che si fa ricordare" },
+  { slug: 'postera-amarone', appunto: 'Per le carte che puntano in alto' },
+];
+const conteggi = Object.fromEntries(
+  categorie.map((c) => [c.slug, prodotti.filter((p) => p.tipo === c.tipo).length])
+);
+const numeroIT = { 17: 'diciassette', 19: 'diciannove', 24: 'ventiquattro' };
+
+
+// l'ondata di bollicine del capitolo 01: ~50 bolle generate in modo deterministico,
+// che risalgono lo schermo all'ingresso della sezione e si dissolvono
+const perlage = Array.from({ length: 52 }, (_, i) => ({
+  x: Math.round(((i * 61.8) % 100) * 10) / 10,          // distribuzione a spirale aurea: copre tutto lo schermo
+  s: 4 + ((i * 7) % 15),                                 // 4–18 px
+  d: (18 + ((i * 17) % 16)) / 10,                        // 1.8–3.3 s di risalita
+  del: ((i * 13) % 11) / 10,                             // partenze scaglionate entro ~1 s
+  drift: ((i * 29) % 56) - 28,                           // deriva laterale ±28 px
+  o: (25 + ((i * 11) % 38)) / 100,                       // opacità .25–.62
+}));
+---
+<Base
+  titolo="Claudio Cappelletti — Agente di commercio beverage · Riva del Garda"
+  descrizione="Vini e birre per ristoranti, bar e birrerie tra Riva del Garda e il Trentino. Sessanta etichette da quindici cantine, selezionate e seguite di persona."
+  temaScuro={true}
+>
+  <!-- ============ APERTURA ============ -->
+  <section class="cap intro scena vis">
+    <p class="occhiello">Riva del Garda — Trentino</p>
+    <h1 class="serif">
+      <span class="maschera"><span>Il vino giusto,</span></span>
+      <span class="maschera"><span>per <em>il tuo locale</em>.</span></span>
+    </h1>
+    <p class="sotto">
+      Claudio Cappelletti, agente di commercio nel beverage.
+      Vini e birre per <strong>ristoranti, bar e birrerie</strong>, scelti bottiglia
+      per bottiglia e seguiti di persona.
+    </p>
+    <a class="giu" href="#metodo">Scorri la selezione ↓</a>
+    <div class="nastro" aria-hidden="true"><div>
+      {[...Array(2)].map(() => (
+        <>
+          <span>Franciacorta</span><span>Lugana</span><span>Amarone</span><span>Champagne</span>
+          <span>Ribolla Gialla</span><span>Primitivo</span><span>Trento DOC</span>
+          <span>Gewürztraminer</span><span>Nebbiolo</span><span>Moscato d'Asti</span>
+        </>
+      ))}
+    </div></div>
+  </section>
+
+  <!-- ============ IL METODO ============ -->
+  <section class="metodo scena" id="metodo">
+    <p class="appunto-degustazione reveal">dal primo assaggio al riordino</p>
+    <h2 class="serif maschera"><span>Come nasce una carta che funziona</span></h2>
+    <div class="passi">
+      <div class="passo reveal">
+        <span class="n serif">01</span>
+        <h3 class="serif">Una visita, qualche bottiglia</h3>
+        <p>Le etichette si scelgono assaggiandole, direttamente al banco del locale. Senza fretta e senza listini calati dall'alto.</p>
+      </div>
+      <div class="passo reveal">
+        <span class="n serif">02</span>
+        <h3 class="serif">Una selezione su misura</h3>
+        <p>Carta, prezzi e rotazioni costruiti sul menu, sul pubblico e sulla stagione. Un rifugio in quota e un cocktail bar sul lago non versano le stesse bottiglie.</p>
+      </div>
+      <div class="passo reveal">
+        <span class="n serif">03</span>
+        <h3 class="serif">Riordini senza pensieri</h3>
+        <p>Basta un messaggio: è il vantaggio di lavorare con un agente di zona, non con un portale.</p>
+      </div>
+    </div>
+    <a class="chi-link reveal" href="/chi-sono/">Il metodo, raccontato meglio →</a>
+  </section>
+
+  <!-- ============ CAPITOLI CATEGORIE ============ -->
+  {categorie.map((c) => (
+    <section class="cap categoria scena" id={c.slug} style={`background:${c.sfondo};color:${c.testo}`}>
+      {c.slug === 'bollicine' && (
+        <div class="perlage" aria-hidden="true">
+          {perlage.map((b) => (
+            <i style={`left:${b.x}%;width:${b.s}px;height:${b.s}px;--d:${b.d}s;--del:${b.del}s;--drift:${b.drift}px;--o:${b.o}`}></i>
+          ))}
+        </div>
+      )}
+      {c.slug === 'bianchi' && (
+        <div class="luce" aria-hidden="true"><i></i><i></i></div>
+      )}
+      {c.slug === 'rossi' && (
+        <div class="onda" aria-hidden="true"><i></i><i></i></div>
+      )}
+      {c.slug === 'birre' && (
+        <div class="colata" aria-hidden="true"><i></i></div>
+      )}
+      <p class="num serif">Capitolo {c.capitolo} · {c.slug === 'birre' ? 'su richiesta' : `${numeroIT[conteggi[c.slug]] ?? conteggi[c.slug]} etichette`}</p>
+      <h2 class="megatitolo serif">
+        <span class="maschera"><span class="ghost">{c.articolo}</span></span>
+        <span class="maschera"><span>{c.parola}</span></span>
+      </h2>
+      <p class="appunto-degustazione">{c.nota}</p>
+      <p class="sotto">{c.descrizione}</p>
+      <p class="meta">{c.meta}</p>
+      <a class="vai" href={`/${c.slug}/`}>{c.slug === 'birre' ? 'Parliamone' : `Sfoglia ${c.nome.toLowerCase()}`}</a>
+      {vetrina[c.slug] && (
+        <div class="bottiglie">
+          {vetrina[c.slug].map((s) => {
+            const p = perSlugProdotto[s];
+            return (
+              <a class="bottiglia" href={`/prodotto/${p.slug}/`}>
+                <img src={`/immagini/prodotti/${p.immagine}`} alt={p.nome} loading="lazy" width="400" height="460" />
+                <figcaption>{p.nome}</figcaption>
+              </a>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  ))}
+
+  <!-- ============ TRE CONSIGLI ============ -->
+  <section class="certezze scena">
+    <div class="titolo">
+      <p class="appunto-degustazione reveal">provate al tavolo, non sulla carta</p>
+      <h2 class="serif maschera"><span>Tre certezze</span></h2>
+    </div>
+    <div class="consigli">
+      {consigli.map(({ slug, appunto }, i) => {
+        const p = perSlugProdotto[slug];
+        return (
+          <a class="consiglio reveal" href={`/prodotto/${p.slug}/`} style={`transition-delay:${i * 0.12}s`}>
+            <span class="cartellino serif">{appunto}</span>
+            <div class="foto"><img src={`/immagini/prodotti/${p.immagine}`} alt={p.nome} loading="lazy" width="400" height="400" /></div>
+            <div class="nome">{p.nome} — {p.azienda}</div>
+            <div class="den serif">{p.denominazione} · {p.uve}</div>
+          </a>
+        );
+      })}
+    </div>
+    <p class="chiusa serif reveal">Le altre cinquantasette? Meglio assaggiarle che leggerle.</p>
+  </section>
+
+  <!-- ============ CANTINE ============ -->
+  <section class="valigia scena">
+    <h2 class="serif maschera"><span>Le cantine rappresentate</span></h2>
+    <p class="appunto-degustazione reveal">quindici realtà, quasi tutte a conduzione familiare</p>
+    <div class="nastro-cantine" aria-hidden="true"><div>
+      {[...cantine, ...cantine].map((n) => <span>{n}</span>)}
+    </div></div>
+  </section>
+
+  <!-- ============ CONGEDO ============ -->
+  <section class="congedo scena">
+    <h2 class="serif"><span class="maschera"><span>Il prossimo assaggio</span></span><br/><span class="maschera"><span>è al tuo tavolo.</span></span></h2>
+    <p class="reveal">Degustazioni in sede, consigli sulla carta, riordini rapidi.</p>
+    <div class="azioni reveal">
+      <a class="bottone chiaro" href={contatti.telefonoHref}>{contatti.telefono}</a>
+      <a class="bottone" href={contatti.whatsapp}>WhatsApp</a>
+      <a class="bottone" href="/contatti/">Tutti i contatti</a>
+    </div>
+  </section>
+
+  <script>
+    // gli ingressi di materia dei capitoli (bollicine che salgono, luce sui bianchi,
+    // onda di vino sui rossi): partono quando la sezione entra in vista, si dissolvono
+    // da soli e si riarmano quando la sezione esce dallo schermo
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      ['bollicine', 'bianchi', 'rossi', 'birre'].forEach((id) => {
+        const sezione = document.getElementById(id);
+        if (!sezione) return;
+        let pronta = true;
+        new IntersectionObserver((voci) => {
+          voci.forEach((v) => {
+            if (v.isIntersecting && pronta) {
+              pronta = false;
+              sezione.classList.add('inonda');
+              setTimeout(() => sezione.classList.remove('inonda'), 4600);
+            } else if (!v.isIntersecting) {
+              pronta = true;
+            }
+          });
+        }, { threshold: 0.35 }).observe(sezione);
+      });
+    }
+  </script>
+</Base>
+
+<style>
+  /* ============ apertura ============ */
+  .cap { min-height: 100svh; position: relative; overflow: hidden; display: grid; align-content: center; padding: 16vh 8vw 14vh; }
+  .intro { background: var(--vino-scuro); color: var(--crema); }
+  .intro::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('/foto/foto2-web.jpg') center/cover no-repeat;
+    opacity: .4;
+  }
+  .intro::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(200deg, color-mix(in srgb, var(--vino) 40%, transparent), var(--vino-scuro) 88%);
+  }
+  .intro > * { position: relative; z-index: 2; }
+  .occhiello { font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; opacity: .7; margin-bottom: 2em; }
+  .intro h1 { font-weight: 300; font-size: clamp(2.5rem, 7.5vw, 6rem); line-height: 1.04; }
+  .intro h1 .maschera { display: block; }
+  .intro h1 em { font-style: italic; color: var(--rosa); }
+  .intro .sotto { margin-top: 2.2em; max-width: 32em; font-size: clamp(1rem, 1.6vw, 1.15rem); opacity: .92; }
+  .giu {
+    margin-top: 3em; justify-self: start; color: inherit; text-decoration: none;
+    font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; opacity: .9;
+    border-bottom: 1px solid transparent; transition: border-color .25s, color .25s;
+  }
+  .giu:hover { color: var(--rosa); border-color: var(--rosa); }
+
+  .nastro, .nastro-cantine {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: .9em 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    overflow: hidden; white-space: nowrap;
+    font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; opacity: .85;
+  }
+  .nastro > div, .nastro-cantine > div { display: inline-block; animation: scorri 34s linear infinite; }
+  .nastro span, .nastro-cantine span { margin: 0 1.6em; }
+  .nastro span::after, .nastro-cantine span::after { content: "—"; margin-left: 3.2em; opacity: .5; }
+  @keyframes scorri { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .nastro > div, .nastro-cantine > div { animation: none; } }
+
+  /* ============ il metodo (su crema) ============ */
+  .metodo { background: var(--crema); color: var(--inchiostro); padding: 14vh 8vw 16vh; }
+  .metodo .appunto-degustazione { color: var(--rame); font-size: 1.15rem; }
+  .metodo h2 { font-weight: 300; font-size: clamp(1.9rem, 4.6vw, 3.2rem); margin: .4em 0 2em; max-width: 16em; }
+  .passi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 1150px; border-top: 1px solid rgba(43,22,29,.25); }
+  @media (max-width: 860px) { .passi { grid-template-columns: 1fr; } }
+  .passo { padding: 2.4em 2.4em 2.4em 0; border-bottom: 1px solid rgba(43,22,29,.25); position: relative; }
+  @media (min-width: 861px) {
+    .passo { border-bottom: 0; border-right: 1px solid rgba(43,22,29,.25); padding: 2.6em 2.6em 1em 0; }
+    .passo + .passo { padding-left: 2.6em; }
+    .passo:last-child { border-right: 0; }
+  }
+  .passo .n { font-size: 3.2rem; font-weight: 300; font-style: italic; color: var(--rame); display: block; line-height: 1; margin-bottom: .35em; }
+  .passo h3 { font-weight: 400; font-size: 1.35rem; margin-bottom: .5em; }
+  .passo p { opacity: .78; font-size: .96rem; }
+  .chi-link {
+    display: inline-block; margin-top: 6vh; color: var(--vino); text-decoration: none;
+    font-family: var(--font-serif); font-style: italic; font-size: 1.15rem;
+    border-bottom: 1px solid var(--rame); transition: color .25s;
+  }
+  .chi-link:hover { color: var(--rame); }
+
+  /* ============ capitoli: giuntura diagonale da taglio d'etichetta ============ */
+  .categoria { clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(16vh + 4vw); }
+  .categoria:nth-of-type(even) { clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 100%); }
+  .certezze { clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(14vh + 4vw) !important; }
+
+  .categoria .num { position: absolute; top: calc(10vh + 4vw); left: 8vw; font-style: italic; letter-spacing: .3em; opacity: .75; font-size: .95rem; }
+  @media (max-width: 760px) { .categoria .num { position: static; margin-bottom: 1.6em; font-size: .82rem; letter-spacing: .18em; } }
+  .megatitolo { font-size: clamp(3rem, 12vw, 10rem); line-height: .92; letter-spacing: -.015em; text-transform: uppercase; font-weight: 300; }
+  .megatitolo .maschera { display: block; }
+  .megatitolo .ghost { color: transparent; -webkit-text-stroke: 1.5px currentColor; opacity: .5; }
+  .categoria .appunto-degustazione { font-size: 1.25rem; margin-top: 1.3em; opacity: .95; position: relative; z-index: 3; }
+  .categoria .sotto { margin-top: 1.2em; max-width: 30em; font-size: clamp(.98rem, 1.5vw, 1.1rem); opacity: .92; position: relative; z-index: 3; }
+  .categoria .meta { margin-top: 1.4em; font-size: .74rem; letter-spacing: .28em; text-transform: uppercase; opacity: .75; position: relative; z-index: 3; }
+  @media (min-width: 1021px) { .categoria .sotto, .categoria .meta { max-width: min(30em, 42vw); } }
+  .vai {
+    margin-top: 2.6em; justify-self: start; position: relative; z-index: 3;
+    font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; color: inherit;
+    border-bottom: 1px solid currentColor; padding-bottom: .35em; transition: letter-spacing .3s;
+  }
+  .vai:hover { letter-spacing: .34em; }
+
+  /* vetrina bottiglie: teatrale su desktop, carosello ordinato su mobile */
+  .bottiglie { position: absolute; right: 4vw; top: 50%; translate: 0 -50%; display: flex; gap: 2vw; align-items: flex-end; z-index: 2; }
+  .bottiglia {
+    background: var(--crema); padding: 10px; width: clamp(115px, 12.5vw, 175px);
+    box-shadow: 0 26px 55px rgba(30,10,18,.35); text-decoration: none;
+    display: block;
+    opacity: 0; transform: translateY(50px) rotate(0deg);
+    transition: transform .9s cubic-bezier(.22,1,.36,1), opacity .9s;
+  }
+  .scena.vis .bottiglia { opacity: 1; }
+  .scena.vis .bottiglia:nth-child(1) { transform: rotate(-3deg) translateY(12px); transition-delay: .15s; }
+  .scena.vis .bottiglia:nth-child(2) { transform: rotate(2deg) translateY(-16px); transition-delay: .3s; }
+  .scena.vis .bottiglia:nth-child(3) { transform: rotate(-1deg) translateY(6px); transition-delay: .45s; }
+  .bottiglia img { display: block; width: 100%; height: auto; aspect-ratio: 1/1.15; object-fit: cover; object-position: top; }
+  .bottiglia figcaption { font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: #3a2a20; padding: 8px 2px 2px; text-align: center; }
+  .scena.vis .bottiglia:hover { transform: rotate(0) translateY(-10px) scale(1.04); z-index: 3; }
+  @media (max-width: 1020px) {
+    .bottiglie {
+      position: relative; right: auto; top: auto; translate: none; margin-top: 5vh;
+      overflow-x: auto; scroll-snap-type: x mandatory; align-items: stretch;
+      gap: 14px; padding: 4px 4px 18px; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .bottiglie::-webkit-scrollbar { display: none; }
+    .bottiglia { flex: 0 0 min(46vw, 190px); width: auto; scroll-snap-align: start; }
+    .scena.vis .bottiglia,
+    .scena.vis .bottiglia:nth-child(1),
+    .scena.vis .bottiglia:nth-child(2),
+    .scena.vis .bottiglia:nth-child(3) { transform: none; }
+  }
+
+  /* ============ l'ondata di bollicine (solo capitolo 01) ============ */
+  .perlage { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .perlage i {
+    position: absolute; bottom: -20px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.95), rgba(255,255,255,.08) 75%);
+    opacity: 0;
+  }
+  .categoria.inonda .perlage i {
+    animation: bolla var(--d) cubic-bezier(.25,.4,.45,1) var(--del) 1 both;
+  }
+  @keyframes bolla {
+    0%   { transform: translateY(0) translateX(0) scale(.6); opacity: 0; }
+    12%  { opacity: var(--o); }
+    75%  { opacity: var(--o); }
+    100% { transform: translateY(-112vh) translateX(var(--drift)) scale(1.15); opacity: 0; }
+  }
+  /* ============ il riflesso di luce (capitolo 02, i bianchi) ============ */
+  .luce { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .luce i {
+    position: absolute; top: -30%; height: 160%; width: 34vw;
+    background: linear-gradient(100deg, transparent, rgba(255,252,235,.95), transparent);
+    mix-blend-mode: overlay;
+    filter: blur(10px); opacity: 0;
+    transform: translateX(-60vw) rotate(12deg);
+  }
+  .luce i:nth-child(2) { width: 12vw; }
+  .categoria.inonda .luce i:nth-child(1) { animation: luce 2.6s cubic-bezier(.35,.15,.25,1) .1s 1 both; }
+  .categoria.inonda .luce i:nth-child(2) { animation: luce 2.6s cubic-bezier(.35,.15,.25,1) .4s 1 both; }
+  @keyframes luce {
+    0%   { transform: translateX(-60vw) rotate(12deg); opacity: 0; }
+    18%  { opacity: 1; }
+    82%  { opacity: 1; }
+    100% { transform: translateX(135vw) rotate(12deg); opacity: 0; }
+  }
+
+  /* ============ l'onda di vino (capitolo 03, i rossi) ============ */
+  .onda { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .onda i {
+    position: absolute; top: -5vh; width: 170vw; height: 95vh;
+    border-radius: 48% 52% 55% 45% / 62% 55% 45% 38%;
+    filter: blur(26px); opacity: 0;
+    left: -35vw;
+  }
+  .onda i:nth-child(1) { background: radial-gradient(ellipse at center, rgba(178,45,76,.75), rgba(178,45,76,0) 68%); }
+  .onda i:nth-child(2) { background: radial-gradient(ellipse at center, rgba(12,1,6,.7), rgba(12,1,6,0) 68%); top: 30vh; height: 75vh; }
+  .categoria.inonda .onda i:nth-child(1) { animation: onda 3.2s cubic-bezier(.4,.1,.3,1) 0s 1 both; }
+  .categoria.inonda .onda i:nth-child(2) { animation: onda 3.2s cubic-bezier(.4,.1,.3,1) .45s 1 both; }
+  @keyframes onda {
+    0%   { transform: translateX(140vw) rotate(3deg); opacity: 0; }
+    15%  { opacity: 1; }
+    50%  { transform: translateX(0) rotate(-2deg) translateY(-7vh); }
+    85%  { opacity: 1; }
+    100% { transform: translateX(-140vw) rotate(2deg); opacity: 0; }
+  }
+
+  /* ============ la colata di luce (capitolo 04, le birre) ============ */
+  .colata { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .colata i {
+    position: absolute; left: -10%; right: -10%; height: 40vh; top: 65vh;
+    background: linear-gradient(to top, rgba(255,204,110,0), rgba(255,204,110,.4) 50%, rgba(255,204,110,0));
+    filter: blur(14px); opacity: 0;
+  }
+  .categoria.inonda .colata i { animation: versa 2.8s ease-out .1s 1 both; }
+  @keyframes versa {
+    0%   { transform: translateY(38vh); opacity: 0; }
+    22%  { opacity: 1; }
+    78%  { opacity: .85; }
+    100% { transform: translateY(-72vh); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { .perlage, .luce, .onda, .colata { display: none; } }
+
+  /* ============ tre certezze ============ */
+  .certezze { background: var(--vino-scuro); color: var(--crema); padding: 14vh 6vw; }
+  .certezze .titolo { text-align: center; margin-bottom: 10vh; }
+  .certezze .appunto-degustazione { color: var(--rosa); font-size: 1.1rem; justify-content: center; }
+  .certezze h2 { font-weight: 300; font-style: italic; font-size: clamp(2.2rem, 5.5vw, 3.6rem); margin-top: .25em; }
+  .consigli { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.2em; max-width: 1080px; margin: 0 auto; }
+  @media (max-width: 900px) { .consigli { grid-template-columns: 1fr; max-width: 420px; gap: 4.5em; } }
+  .consiglio { position: relative; text-align: center; text-decoration: none; color: inherit; }
+  .consiglio .foto {
+    background: var(--crema); padding: 14px 14px 18px;
+    box-shadow: 0 16px 34px rgba(0,0,0,.35);
+    transition: transform .35s;
+  }
+  .consiglio:hover .foto { transform: translateY(-6px); }
+  .consiglio .foto img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; mix-blend-mode: multiply; }
+  .consiglio .nome { margin-top: 1.3em; font-size: 1.08rem; font-weight: 500; }
+  .consiglio .den { font-style: italic; opacity: .65; font-size: .92rem; }
+  .cartellino {
+    position: absolute; top: -1.15em; left: 50%; translate: -50% 0; white-space: nowrap; z-index: 2;
+    font-style: italic; font-size: .95rem;
+    background: var(--vino); color: var(--rosa);
+    padding: .35em 1.3em; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--rosa) 45%, transparent);
+  }
+  .certezze .chiusa { text-align: center; margin-top: 10vh; font-style: italic; font-weight: 300; font-size: 1.4rem; opacity: .85; }
+
+  /* ============ cantine ============ */
+  .valigia { background: var(--crema); color: var(--inchiostro); padding: 14vh 0 16vh; position: relative; overflow: hidden; text-align: center; }
+  .valigia h2 { font-weight: 300; font-style: italic; font-size: clamp(1.9rem, 4.6vw, 2.9rem); }
+  .valigia .appunto-degustazione { color: var(--rame); font-size: 1.05rem; margin: 1em 0 8vh; justify-content: center; }
+  .nastro-cantine { position: static; border-top: 1px solid rgba(43,22,29,.25); border-bottom: 1px solid rgba(43,22,29,.25); font-size: clamp(1.4rem, 3vw, 2.1rem); color: #5c4049; }
+
+  /* ============ congedo ============ */
+  .congedo { background: var(--vino-scuro); color: var(--crema); text-align: center; padding: 16vh 8vw; clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 100%); margin-top: -4vw; }
+  .congedo h2 { font-weight: 300; font-style: italic; font-size: clamp(2.2rem, 6.5vw, 4.4rem); line-height: 1.08; }
+  .congedo h2 .maschera { display: inline-block; }
+  .congedo p { margin: 1.6em auto 2.6em; opacity: .8; max-width: 28em; }
+  .azioni { display: flex; gap: 1.1em; justify-content: center; flex-wrap: wrap; }
+</style>
